@@ -72,6 +72,12 @@ class StatTrackerTest < Minitest::Test
     assert_equal "San Jose Earthquakes", @stat_tracker.rival("3")
   end
 
+  def test_it_can_return_head_to_head_results
+    assert_instance_of Hash, @stat_tracker.head_to_head("3")
+    assert_equal 31, @stat_tracker.head_to_head("3").length
+    assert_equal 0.44, @stat_tracker.head_to_head("3")["Atlanta United"]
+  end
+
   def test_it_can_count_season_games
     expected = {
    "20122013"=>806,
