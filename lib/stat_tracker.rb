@@ -5,6 +5,7 @@ require_relative 'scored_goal_stat'
 require_relative 'season_stat_coach'
 require_relative 'season_stat_team'
 require_relative 'league_stat'
+require_relative 'team_stat'
 require_relative 'game_collection'
 
 class StatTracker
@@ -164,6 +165,21 @@ class StatTracker
   def percentage_ties
     @game_collection.create_pct_data
     @game_collection.percentage_ties
+  end
+
+  def highest_total_score
+    team_stat = TeamStat.new(@games_file)
+    team_stat.highest_total_score
+  end
+
+  def lowest_total_score
+    team_stat = TeamStat.new(@games_file)
+    team_stat.lowest_total_score
+  end
+
+  def biggest_blowout
+    team_stat = TeamStat.new(@games_file)
+    team_stat.biggest_blowout
   end
 
 end
