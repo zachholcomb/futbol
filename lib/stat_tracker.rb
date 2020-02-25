@@ -150,7 +150,7 @@ class StatTracker
     league_stat = LeagueStat.new(@teams_file, @games_file)
     league_stat.worst_offense
   end
-  #
+
   def percentage_home_wins
     @game_collection.create_pct_data
     @game_collection.percentage_home_wins
