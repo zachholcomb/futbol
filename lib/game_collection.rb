@@ -7,6 +7,7 @@ class GameCollection
   def initialize(file_path)
     @games_list = create_games(file_path)
     @pct_data = Hash.new { |hash, key| hash[key] = 0 }
+    create_pct_data
   end
 
   def create_games(file_path)

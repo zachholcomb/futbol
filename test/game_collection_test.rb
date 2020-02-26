@@ -25,26 +25,22 @@ class GameCollectionClass < Minitest::Test
       away_wins: 103,
       ties: 47
     }
-    assert_equal expected, @game_collection.create_pct_data
+    assert_equal expected, @game_collection.pct_data
   end
 
   def test_it_returns_home_win_pct
-    @game_collection.create_pct_data
     assert_equal 0.5, @game_collection.percentage_home_wins
   end
 
   def test_it_returns_away_win_pct
-    @game_collection.create_pct_data
     assert_equal 0.34, @game_collection.percentage_visitor_wins
   end
 
   def test_it_returns_tie_pct
-    @game_collection.create_pct_data
     assert_equal 0.16, @game_collection.percentage_ties
   end
 
   def test_it_can_calculate_average_goals_per_game
-    @game_collection.create_pct_data
     assert_equal 4.03, @game_collection.average_goals_per_game
   end
 
