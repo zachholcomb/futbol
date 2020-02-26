@@ -10,8 +10,6 @@ class StatTracker
   attr_reader :game_collection, :team_collection, :game_team_collection
 
   def initialize(games_file, teams_file, game_teams_file)
-    @games_file = games_file
-    @teams_file = teams_file
     @game_collection = GameCollection.new(games_file)
     @game_team_collection = GameTeamCollection.new(game_teams_file)
     @team_collection = TeamCollection.new(teams_file)
@@ -21,8 +19,8 @@ class StatTracker
     @season.get_all_seasons
     @season.season_games_by_all_seasons
     @season.season_game_teams_by_all_seasons
-    @league_stat = LeagueStat.new(@teams_file, @games_file)
-    @team_stat = TeamStat.new(@games_file)
+    @league_stat = LeagueStat.new(teams_file, games_file)
+    @team_stat = TeamStat.new(games_file)
   end
 
   def self.from_csv(locations_params)

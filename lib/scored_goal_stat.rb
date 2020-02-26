@@ -1,8 +1,10 @@
 require_relative 'team_collection'
 require_relative 'game_team_collection'
 require_relative 'game_collection'
+require_relative './modules/helper_methods'
 
 class ScoredGoalStat
+  include Helperable
 
   def initialize(team_collection, game_team_collection, game_collection)
     @team_collection = team_collection
@@ -50,12 +52,12 @@ class ScoredGoalStat
 
   def favorite_opponent(team_id)
     min_average_wins = average_opponent_games(team_id, given_team_games_lost(team_id), opponent_games(team_id)).min_by { |opponent_id, average| average }
-    retrieve_team_name(min_average_wins.first)
+    get_team_name(min_average_wins.first)
   end
 
   def rival(team_id)
     max_average_wins = average_opponent_games(team_id, given_team_games_lost(team_id), opponent_games(team_id)).max_by { |opponent_id, average| average }
-    retrieve_team_name(max_average_wins.first)
+    get_team_name(max_average_wins.first)
   end
 
   def opponent_games(team_id)
@@ -135,16 +137,16 @@ class ScoredGoalStat
   def convert_id_to_name(team_id, teams, opponents)
     new_hash = {}
     average_opponent_games_head_to_head(team_id, teams, opponents).map do |key, value|
-      new_hash[retrieve_team_name(key)] = value
+      new_hash[get_team_name(key)] = value
     end
     new_hash
   end
 
-  def retrieve_team_name(team_id)
-    @team_collection.teams_list.map do |team|
-      if team.team_id.to_s == team_id
-        team.team_name
-      end
-    end.compact.first
-  end
+  # def retrieve_team_name(team_id)
+  #   @team_collection.teams_list.map do |team|
+  #     if team.team_id.to_s == team_id
+  #       team.team_name
+  #     end
+  #   end.compact.first
+  # end
 end
