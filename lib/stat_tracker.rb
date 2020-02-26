@@ -191,17 +191,14 @@ class StatTracker
   end
 
   def highest_total_score
-
-    team_stat.highest_total_score
+    @team_stat.highest_total_score
   end
 
   def lowest_total_score
-    team_stat = TeamStat.new(@games_file)
-    team_stat.lowest_total_score
+    @team_stat.lowest_total_score
   end
 
   def biggest_blowout
-    team_stat = TeamStat.new(@games_file)
-    team_stat.biggest_blowout
+    @team_stat.biggest_blowout
   end
 end
