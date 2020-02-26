@@ -30,5 +30,4 @@ class TeamStatTest < Minitest::Test
   def test_biggest_blowout
     assert_equal 4, @game.biggest_blowout
   end
-
 end
