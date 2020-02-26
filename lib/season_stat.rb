@@ -170,19 +170,6 @@ class SeasonStat
     worst_coach[0]
   end
 
-  def get_team_ids_by_season(season)
-    @game_teams_by_season[season].map do |game_team|
-      game_team.team_id
-    end.uniq
-  end
-
-  def get_team_name(team_id)
-    team_name_by_id = @team_collection.teams_list.find do |team|
-      team.team_id == team_id
-    end
-    team_name_by_id.team_name
-  end
-
   def get_tackles_by_team_season(team_id, season)#refactor to a reduce
     team_tackles = 0
     @game_teams_by_season[season].each do |game_team|

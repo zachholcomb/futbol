@@ -19,8 +19,8 @@ class StatTracker
     @season.get_all_seasons
     @season.season_games_by_all_seasons
     @season.season_game_teams_by_all_seasons
-    @league_stat = LeagueStat.new(teams_file, games_file)
-    @team_stat = TeamStat.new(games_file)
+    @league_stat = LeagueStat.new(@team_collection, @game_collection)
+    @team_stat = TeamStat.new(@game_collection)
   end
 
   def self.from_csv(locations_params)
@@ -110,11 +110,11 @@ class StatTracker
   def least_accurate_team(season_param)
     @season.least_accurate_team(season_param)
   end
-  #
+
   def most_tackles(season_param)
     @season.most_tackles(season_param)
   end
-  #
+
   def fewest_tackles(season_param)
     @season.fewest_tackles(season_param)
   end
@@ -201,5 +201,4 @@ class StatTracker
   def biggest_blowout
     @team_stat.biggest_blowout
   end
-
 end
