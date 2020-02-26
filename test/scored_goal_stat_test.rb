@@ -163,8 +163,8 @@ class ScoredGoalStatTest < Minitest::Test
   end
 
   def test_it_can_retrieve_team_name
-    assert_instance_of String, @scored_goal_stat.retrieve_team_name("3")
-    assert_equal "Houston Dynamo", @scored_goal_stat.retrieve_team_name("3")
-    assert_equal "New York Red Bulls", @scored_goal_stat.retrieve_team_name("8")
+    assert_instance_of String, @scored_goal_stat.get_team_name("3")
+    assert_equal "Houston Dynamo", @scored_goal_stat.get_team_name("3")
+    assert_equal "New York Red Bulls", @scored_goal_stat.get_team_name("8")
   end
 end
