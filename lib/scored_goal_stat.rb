@@ -141,12 +141,4 @@ class ScoredGoalStat
     end
     new_hash
   end
-
-  # def retrieve_team_name(team_id)
-  #   @team_collection.teams_list.map do |team|
-  #     if team.team_id.to_s == team_id
-  #       team.team_name
-  #     end
-  #   end.compact.first
-  # end
 end
