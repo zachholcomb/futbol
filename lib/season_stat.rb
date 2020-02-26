@@ -91,12 +91,6 @@ class SeasonStat
     team_bust[1][:team_name]
   end
 
-  def coaches_by_season(season)
-    @game_teams_by_season[season].map do |game|
-      game.head_coach
-    end.uniq
-  end
-
   def get_coach_wins_by_season(coach, season)
     @game_teams_by_season[season].find_all do |game_team|
       game_team.head_coach == coach && game_team.result == "WIN"
@@ -134,36 +128,6 @@ class SeasonStat
       coach_wins
     end
     worst_coach[0]
-  end
-
-  def get_tackles_by_team_season(team_id, season)#refactor to a reduce
-    team_tackles = 0
-    @game_teams_by_season[season].each do |game_team|
-      if game_team.team_id.to_s == team_id
-        team_tackles += game_team.tackles
-      end
-    end
-    team_tackles
-  end
-
-  def get_goals_by_team_season(team_id, season)#refactor to a reduce
-    team_goals = 0
-    @game_teams_by_season[season].each do |game_team|
-      if game_team.team_id.to_s == team_id
-        team_goals += game_team.goals
-      end
-    end
-    team_goals
-  end
-
-  def get_shots_by_team_season(team_id, season)
-    team_shots = 0
-    @game_teams_by_season[season].each do |game_team|
-      if game_team.team_id.to_s == team_id
-        team_shots += game_team.shots
-      end
-    end
-    team_shots
   end
 
   def team_shots_to_goal_ratio_by_season(team_id, season)

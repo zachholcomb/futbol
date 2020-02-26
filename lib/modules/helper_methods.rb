@@ -11,17 +11,23 @@ module Helperable
     end
   end
 
-  def get_team_name(team_id)
-    team_name_by_id = @team_collection.teams_list.find do |team|
-      team.team_id.to_s == team_id
-    end
-    team_name_by_id.team_name
+  def coaches_by_season(season)
+    @game_teams_by_season[season].map do |game|
+      game.head_coach
+    end.uniq
   end
 
   def get_team_ids_by_season(season)
     @game_teams_by_season[season].map do |game_team|
       game_team.team_id.to_s
     end.uniq
+  end
+
+  def get_team_name(team_id)
+    team_name_by_id = @team_collection.teams_list.find do |team|
+      team.team_id.to_s == team_id
+    end
+    team_name_by_id.team_name
   end
 
   def total_team_games_by_game_type(team_id, game_type, season)
@@ -56,5 +62,35 @@ module Helperable
     else
       ((total_wins / total_games) * 100).round(2)
     end
+  end
+
+  def get_tackles_by_team_season(team_id, season)#refactor to a reduce
+    team_tackles = 0
+    @game_teams_by_season[season].each do |game_team|
+      if game_team.team_id.to_s == team_id
+        team_tackles += game_team.tackles
+      end
+    end
+    team_tackles
+  end
+
+  def get_goals_by_team_season(team_id, season)#refactor to a reduce
+    team_goals = 0
+    @game_teams_by_season[season].each do |game_team|
+      if game_team.team_id.to_s == team_id
+        team_goals += game_team.goals
+      end
+    end
+    team_goals
+  end
+
+  def get_shots_by_team_season(team_id, season)
+    team_shots = 0
+    @game_teams_by_season[season].each do |game_team|
+      if game_team.team_id.to_s == team_id
+        team_shots += game_team.shots
+      end
+    end
+    team_shots
   end
 end
