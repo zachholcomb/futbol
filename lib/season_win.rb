@@ -36,23 +36,22 @@ class SeasonWin
   end
 
   def total_games_by_season(team_id)
-    games =  @game_team_collection.game_team_list.map do |game_team|
-      if game_team.team_id.to_s == team_id
-        game_team.game_id.to_s
-      end
-    end.compact
-    grouped_games = group_arrays_by_season(games)
-    transform_key_into_season(grouped_games)
+    create_total_games_by_id(team_id, win_game = false)
   end
 
   def winning_game_ids(team_id)
-    wins =  @game_team_collection.game_team_list.map do |game_team|
-      if (game_team.team_id.to_s == team_id) && (game_team.result == "WIN")
+    create_total_games_by_id(team_id, win_game = true)
+  end
+
+  def create_total_games_by_id(team_id, win_game)
+    total_games =  @game_team_collection.game_team_list.map do |game_team|
+      if (game_team.team_id.to_s == team_id && (game_team.result == "WIN") && win_game) ||
+          (game_team.team_id.to_s == team_id && !win_game)
         game_team.game_id.to_s
       end
     end.compact
-    grouped_wins = group_arrays_by_season(wins)
-    transform_key_into_season(grouped_wins)
+    grouped_games = group_arrays_by_season(total_games)
+    transform_key_into_season(grouped_games)
   end
 
   def group_arrays_by_season(game_id_array)

@@ -13,6 +13,8 @@ class StatTracker
     @game_collection = GameCollection.new(games_file)
     @game_team_collection = GameTeamCollection.new(game_teams_file)
     @team_collection = TeamCollection.new(teams_file)
+    @season_win = SeasonWin.new(@team_collection, @game_team_collection)
+    @scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
     @season = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
     @season.get_all_seasons
     @season.season_games_by_all_seasons
@@ -30,58 +32,47 @@ class StatTracker
   end
 
   def team_info(team_id)
-    season_win = SeasonWin.new(@team_collection, @game_team_collection)
-    season_win.team_info(team_id)
+    @season_win.team_info(team_id)
   end
 
   def best_season(team_id)
-    season_win = SeasonWin.new(@team_collection, @game_team_collection)
-    season_win.best_season(team_id)
+    @season_win.best_season(team_id)
   end
 
   def worst_season(team_id)
-    season_win = SeasonWin.new(@team_collection, @game_team_collection)
-    season_win.worst_season(team_id)
+    @season_win.worst_season(team_id)
   end
 
   def average_win_percentage(team_id)
-    season_win = SeasonWin.new(@team_collection, @game_team_collection)
-    season_win.average_win_percentage(team_id)
+    @season_win.average_win_percentage(team_id)
   end
 
   def most_goals_scored(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.most_goals_scored(team_id)
+    @scored_goal_stat.most_goals_scored(team_id)
   end
 
   def fewest_goals_scored(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.fewest_goals_scored(team_id)
+    @scored_goal_stat.fewest_goals_scored(team_id)
   end
 
   def biggest_team_blowout(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.biggest_team_blowout(team_id)
+    @scored_goal_stat.biggest_team_blowout(team_id)
   end
 
   def worst_loss(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.worst_loss(team_id)
+    @scored_goal_stat.worst_loss(team_id)
   end
 
   def favorite_opponent(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.favorite_opponent(team_id)
+    @scored_goal_stat.favorite_opponent(team_id)
   end
 
   def rival(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.rival(team_id)
+    @scored_goal_stat.rival(team_id)
   end
 
   def head_to_head(team_id)
-    scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    scored_goal_stat.head_to_head(team_id)
+    @scored_goal_stat.head_to_head(team_id)
   end
 
   def count_of_games_by_season
