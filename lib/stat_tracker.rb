@@ -124,57 +124,46 @@ class StatTracker
   end
 
   def best_offense
-    @league_stat.create_scoring_averages
     @league_stat.best_offense
   end
 
   def worst_offense
-    @league_stat.create_scoring_averages
     @league_stat.worst_offense
   end
 
   def best_defense
-    @league_stat.create_scoring_averages
     @league_stat.best_defense
   end
 
   def worst_defense
-    @league_stat.create_scoring_averages
     @league_stat.worst_defense
   end
 
   def highest_scoring_visitor
-    @league_stat.create_scoring_averages
     @league_stat.highest_scoring_visitor
   end
 
   def highest_scoring_home_team
-    @league_stat.create_scoring_averages
     @league_stat.highest_scoring_home_team
   end
 
   def lowest_scoring_visitor
-    @league_stat.create_scoring_averages
     @league_stat.lowest_scoring_visitor
   end
 
   def lowest_scoring_home_team
-    @league_stat.create_scoring_averages
     @league_stat.lowest_scoring_home_team
   end
 
   def winningest_team
-    @league_stat.create_scoring_averages
     @league_stat.winningest_team
   end
 
   def best_fans
-    @league_stat.create_scoring_averages
     @league_stat.best_fans
   end
 
   def worst_fans
-    @league_stat.create_scoring_averages
     @league_stat.worst_fans
   end
 

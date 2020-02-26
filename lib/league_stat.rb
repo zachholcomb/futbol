@@ -10,6 +10,7 @@ class LeagueStat
     end
     create_teams(@team_collection.teams_list)
     create_league_stats(@game_collection.games_list)
+    create_scoring_averages
   end
 
   def create_teams(teams)
