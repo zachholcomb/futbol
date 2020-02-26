@@ -8,7 +8,9 @@ class LeagueStatClass < Minitest::Test
   def setup
     teams_file_path = './data/teams.csv'
     games_file_path = './data/games.csv'
-    @league_stat = LeagueStat.new(teams_file_path, games_file_path)
+    @team_collection = TeamCollection.new(teams_file_path)
+    @game_collection = GameCollection.new(games_file_path)
+    @league_stat = LeagueStat.new(@team_collection, @game_collection)
   end
 
   def test_it_exists

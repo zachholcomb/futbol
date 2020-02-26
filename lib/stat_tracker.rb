@@ -10,8 +10,6 @@ class StatTracker
   attr_reader :game_collection, :team_collection, :game_team_collection
 
   def initialize(games_file, teams_file, game_teams_file)
-    @games_file = games_file
-    @teams_file = teams_file
     @game_collection = GameCollection.new(games_file)
     @game_team_collection = GameTeamCollection.new(game_teams_file)
     @team_collection = TeamCollection.new(teams_file)
@@ -21,8 +19,8 @@ class StatTracker
     @season.get_all_seasons
     @season.season_games_by_all_seasons
     @season.season_game_teams_by_all_seasons
-    @league_stat = LeagueStat.new(@teams_file, @games_file)
-    @team_stat = TeamStat.new(@games_file)
+    @league_stat = LeagueStat.new(@team_collection, @game_collection)
+    @team_stat = TeamStat.new(@game_collection)
   end
 
   def self.from_csv(locations_params)
@@ -112,11 +110,11 @@ class StatTracker
   def least_accurate_team(season_param)
     @season.least_accurate_team(season_param)
   end
-  #
+
   def most_tackles(season_param)
     @season.most_tackles(season_param)
   end
-  #
+
   def fewest_tackles(season_param)
     @season.fewest_tackles(season_param)
   end
@@ -126,57 +124,46 @@ class StatTracker
   end
 
   def best_offense
-    @league_stat.create_scoring_averages
     @league_stat.best_offense
   end
 
   def worst_offense
-    @league_stat.create_scoring_averages
     @league_stat.worst_offense
   end
 
   def best_defense
-    @league_stat.create_scoring_averages
     @league_stat.best_defense
   end
 
   def worst_defense
-    @league_stat.create_scoring_averages
     @league_stat.worst_defense
   end
 
   def highest_scoring_visitor
-    @league_stat.create_scoring_averages
     @league_stat.highest_scoring_visitor
   end
 
   def highest_scoring_home_team
-    @league_stat.create_scoring_averages
     @league_stat.highest_scoring_home_team
   end
 
   def lowest_scoring_visitor
-    @league_stat.create_scoring_averages
     @league_stat.lowest_scoring_visitor
   end
 
   def lowest_scoring_home_team
-    @league_stat.create_scoring_averages
     @league_stat.lowest_scoring_home_team
   end
 
   def winningest_team
-    @league_stat.create_scoring_averages
     @league_stat.winningest_team
   end
 
   def best_fans
-    @league_stat.create_scoring_averages
     @league_stat.best_fans
   end
 
   def worst_fans
-    @league_stat.create_scoring_averages
     @league_stat.worst_fans
   end
 
@@ -203,5 +190,4 @@ class StatTracker
   def biggest_blowout
     @team_stat.biggest_blowout
   end
-
 end

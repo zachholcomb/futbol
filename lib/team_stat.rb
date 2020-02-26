@@ -7,9 +7,8 @@ require_relative 'game'
 
 class TeamStat
   attr_reader :game_collection
-  def initialize(game_file)
-    @game_collection = GameCollection.new(game_file)
-
+  def initialize(game_collection)
+    @game_collection = game_collection
   end
 
   def highest_total_score

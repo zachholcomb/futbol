@@ -259,14 +259,14 @@ class SeasonStatTest < Minitest::Test
 
     assert_instance_of Array, @season_stat.get_team_ids_by_season("20122013")
     assert_equal 14, @season_stat.get_team_ids_by_season("20122013").length
-    assert_equal 3, @season_stat.get_team_ids_by_season("20122013")[0]
+    assert_equal "3", @season_stat.get_team_ids_by_season("20122013")[0]
   end
 
   def test_it_can_get_team_name_by_team_id
     @season_stat.get_all_seasons
     @season_stat.season_game_teams_by_all_seasons
 
-    assert_equal "Houston Dynamo", @season_stat.get_team_name(3)
+    assert_equal "Houston Dynamo", @season_stat.get_team_name("3")
   end
 
   def test_it_can_get_team_tackles_by_season
