@@ -43,6 +43,8 @@ class LeagueStatClass < Minitest::Test
       away_goals: 3,
       away_goals_allowed: 2,
       away_wins: 1,
+      away_games: 1,
+      total_wins: 1
     }
 
     assert_equal expected, @league_stat.stats_by_team[101]
@@ -61,6 +63,8 @@ class LeagueStatClass < Minitest::Test
       home_goals: 2,
       home_goals_allowed: 3,
       home_losses: 1,
+      home_games: 1,
+      total_losses: 1
     }
 
     assert_equal expected, @league_stat.stats_by_team[100]
@@ -79,12 +83,16 @@ class LeagueStatClass < Minitest::Test
       away_goals: 3,
       away_goals_allowed: 2,
       away_wins: 1,
+      away_games: 1,
+      total_wins: 1
     }
     expected_home = {
       total_games: 1,
       home_goals: 2,
       home_goals_allowed: 3,
       home_losses: 1,
+      home_games: 1,
+      total_losses: 1
     }
 
     assert_equal expected_away, @league_stat.stats_by_team[101]
@@ -96,11 +104,55 @@ class LeagueStatClass < Minitest::Test
   end
 
   def test_it_returns_best_offense
+    @league_stat.create_scoring_averages
     assert_equal "Reign FC", @league_stat.best_offense
   end
 
   def test_it_returns_worst_offense
+    @league_stat.create_scoring_averages
     assert_equal "Utah Royals FC", @league_stat.worst_offense
+  end
+
+  def test_it_returns_best_defense
+    @league_stat.create_scoring_averages
+    assert_equal "FC Cincinnati", @league_stat.best_defense
+  end
+
+  def test_it_returns_worst_defense
+    @league_stat.create_scoring_averages
+    assert_equal "Columbus Crew SC", @league_stat.worst_defense
+  end
+
+  def test_it_returns_highest_scoring_away_team
+    @league_stat.create_scoring_averages
+    assert_equal "FC Dallas", @league_stat.highest_scoring_visitor
+  end
+
+  def test_it_returns_lowest_scoring_away_team
+    @league_stat.create_scoring_averages
+    assert_equal "San Jose Earthquakes", @league_stat.lowest_scoring_visitor
+  end
+
+  def test_it_returns_highest_scoring_home_team
+    @league_stat.create_scoring_averages
+    assert_equal "Reign FC", @league_stat.highest_scoring_home_team
+  end
+
+  def test_it_returns_lowest_scoring_home_team
+    @league_stat.create_scoring_averages
+    assert_equal "Utah Royals FC", @league_stat.lowest_scoring_home_team
+  end
+
+  def test_it_returns_winningest_team
+    assert_equal "Reign FC", @league_stat.winningest_team
+  end
+
+  def test_it_returns_best_fans
+    assert_equal "San Jose Earthquakes", @league_stat.best_fans
+  end
+
+  def test_it_returns_worst_fans
+    assert_equal ["Houston Dynamo", "Utah Royals FC"], @league_stat.worst_fans
   end
 
 end
