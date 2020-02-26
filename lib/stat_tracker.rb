@@ -13,6 +13,7 @@ class StatTracker
     @games_file = games_file
     @teams_file = teams_file
     @game_collection = GameCollection.new(games_file)
+    @game_collection.create_pct_data
     @game_team_collection = GameTeamCollection.new(game_teams_file)
     @team_collection = TeamCollection.new(teams_file)
     @season = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
@@ -89,7 +90,6 @@ class StatTracker
   end
 
   def average_goals_per_game
-    @game_collection.create_pct_data
     @game_collection.average_goals_per_game
   end
 
@@ -201,17 +201,14 @@ class StatTracker
   end
 
   def percentage_home_wins
-    @game_collection.create_pct_data
     @game_collection.percentage_home_wins
   end
 
   def percentage_visitor_wins
-    @game_collection.create_pct_data
     @game_collection.percentage_visitor_wins
   end
 
   def percentage_ties
-    @game_collection.create_pct_data
     @game_collection.percentage_ties
   end
 
@@ -229,5 +226,4 @@ class StatTracker
     team_stat = TeamStat.new(@games_file)
     team_stat.biggest_blowout
   end
-
 end

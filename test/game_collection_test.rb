@@ -48,10 +48,4 @@ class GameCollectionClass < Minitest::Test
     assert_equal 4.03, @game_collection.average_goals_per_game
   end
 
-  def test_it_can_get_all_seasons
-    season_test_list = ["20122013", "20162017", "20142015", "20152016", "20132014"]
-
-    assert_equal season_test_list, @game_collection.get_all_seasons
-  end
-
 end
