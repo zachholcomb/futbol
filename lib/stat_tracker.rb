@@ -20,7 +20,7 @@ class StatTracker
     @season.season_games_by_all_seasons
     @season.season_game_teams_by_all_seasons
     @league_stat = LeagueStat.new(@team_collection, @game_collection)
-    @team_stat = TeamStat.new(@games_file)
+    @team_stat = TeamStat.new(@game_collection)
   end
 
   def self.from_csv(locations_params)
