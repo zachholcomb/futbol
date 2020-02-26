@@ -21,6 +21,8 @@ class StatTracker
     @season.get_all_seasons
     @season.season_games_by_all_seasons
     @season.season_game_teams_by_all_seasons
+    @league_stat = LeagueStat.new(@teams_file, @games_file)
+    @team_stat = TeamStat.new(@games_file)
   end
 
   def self.from_csv(locations_params)
@@ -121,74 +123,62 @@ class StatTracker
   end
 
   def count_of_teams
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.count_of_teams
+    @league_stat.count_of_teams
   end
 
   def best_offense
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.best_offense
+    @league_stat.create_scoring_averages
+    @league_stat.best_offense
   end
 
   def worst_offense
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.worst_offense
+    @league_stat.create_scoring_averages
+    @league_stat.worst_offense
   end
 
   def best_defense
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.best_defense
+    @league_stat.create_scoring_averages
+    @league_stat.best_defense
   end
 
   def worst_defense
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.worst_defense
+    @league_stat.create_scoring_averages
+    @league_stat.worst_defense
   end
 
   def highest_scoring_visitor
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.highest_scoring_visitor
+    @league_stat.create_scoring_averages
+    @league_stat.highest_scoring_visitor
   end
 
   def highest_scoring_home_team
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.highest_scoring_home_team
+    @league_stat.create_scoring_averages
+    @league_stat.highest_scoring_home_team
   end
 
   def lowest_scoring_visitor
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.lowest_scoring_visitor
+    @league_stat.create_scoring_averages
+    @league_stat.lowest_scoring_visitor
   end
 
   def lowest_scoring_home_team
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.lowest_scoring_home_team
+    @league_stat.create_scoring_averages
+    @league_stat.lowest_scoring_home_team
   end
 
   def winningest_team
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.winningest_team
+    @league_stat.create_scoring_averages
+    @league_stat.winningest_team
   end
 
   def best_fans
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.best_fans
+    @league_stat.create_scoring_averages
+    @league_stat.best_fans
   end
 
   def worst_fans
-    league_stat = LeagueStat.new(@teams_file, @games_file)
-    league_stat.create_scoring_averages
-    league_stat.worst_fans
+    @league_stat.create_scoring_averages
+    @league_stat.worst_fans
   end
 
   def percentage_home_wins
@@ -207,18 +197,15 @@ class StatTracker
   end
 
   def highest_total_score
-    team_stat = TeamStat.new(@games_file)
-    team_stat.highest_total_score
+    @team_stat.highest_total_score
   end
 
   def lowest_total_score
-    team_stat = TeamStat.new(@games_file)
-    team_stat.lowest_total_score
+    @team_stat.lowest_total_score
   end
 
   def biggest_blowout
-    team_stat = TeamStat.new(@games_file)
-    team_stat.biggest_blowout
+    @team_stat.biggest_blowout
   end
 
 end
