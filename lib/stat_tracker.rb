@@ -17,9 +17,6 @@ class StatTracker
     @scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
     @stat = Stat.new(@game_collection, @team_collection, @game_team_collection)
     @season = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
-    @season.get_all_seasons
-    @season.season_games_by_all_seasons
-    @season.season_game_teams_by_all_seasons
     @league_stat = LeagueStat.new(@team_collection, @game_collection)
     @team_stat = TeamStat.new(@game_collection)
   end

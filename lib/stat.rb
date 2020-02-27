@@ -11,6 +11,10 @@ class Stat
     @season_list = []
     @games_by_season = {}
     @game_teams_by_season = {}
+    
+    get_all_seasons
+    season_games_by_all_seasons
+    season_game_teams_by_all_seasons
   end
 
   def get_all_seasons

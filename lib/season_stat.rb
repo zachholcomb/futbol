@@ -9,8 +9,6 @@ class SeasonStat < Stat
     @coach_win_data = {}
   end
 
-
-
   def count_of_season_games(season)
     @games_by_season[season].size
   end
