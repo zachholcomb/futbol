@@ -64,7 +64,7 @@ module Helperable
     end
   end
 
-  def get_tackles_by_team_season(team_id, season)#refactor to a reduce
+  def get_tackles_by_team_season(team_id, season)
     team_tackles = 0
     @game_teams_by_season[season].each do |game_team|
       if game_team.team_id.to_s == team_id
@@ -74,7 +74,7 @@ module Helperable
     team_tackles
   end
 
-  def get_goals_by_team_season(team_id, season)#refactor to a reduce
+  def get_goals_by_team_season(team_id, season)
     team_goals = 0
     @game_teams_by_season[season].each do |game_team|
       if game_team.team_id.to_s == team_id
@@ -92,5 +92,29 @@ module Helperable
       end
     end
     team_shots
+  end
+
+  def get_coach_wins_by_season(coach, season)
+    @game_teams_by_season[season].find_all do |game_team|
+      game_team.head_coach == coach && game_team.result == "WIN"
+    end.length
+  end
+
+  def get_total_coach_games_by_season(coach, season)
+    @game_teams_by_season[season].find_all do |game_team|
+      game_team.head_coach == coach
+    end.length
+  end
+
+  def team_shots_to_goal_ratio_by_season(team_id, season)
+    total_goals = get_goals_by_team_season(team_id, season).to_f
+    total_shots = get_shots_by_team_season(team_id, season)
+    (total_shots / total_goals).round(3)
+  end
+
+  def coach_win_percentage_by_season(coach, season)
+    win_total = get_coach_wins_by_season(coach, season).to_f
+    total_games = get_total_coach_games_by_season(coach, season)
+    ((win_total / total_games) * 100).round(2)
   end
 end

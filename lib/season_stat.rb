@@ -20,7 +20,7 @@ class SeasonStat
     @season_list = @game_collection.games_list.map { |game| game.season }.uniq
   end
 
-  def season_games_by_all_seasons #need to test
+  def season_games_by_all_seasons #need to test #combine these methods
     @season_list.reduce({}) do |acc, season|
       acc[season] = get_season_games(season)
       @games_by_season = acc
@@ -91,24 +91,6 @@ class SeasonStat
     team_bust[1][:team_name]
   end
 
-  def get_coach_wins_by_season(coach, season)
-    @game_teams_by_season[season].find_all do |game_team|
-      game_team.head_coach == coach && game_team.result == "WIN"
-    end.length
-  end
-
-  def get_total_coach_games_by_season(coach, season)
-    @game_teams_by_season[season].find_all do |game_team|
-      game_team.head_coach == coach
-    end.length
-  end
-
-  def coach_win_percentage_by_season(coach, season)
-    win_total = get_coach_wins_by_season(coach, season).to_f
-    total_games = get_total_coach_games_by_season(coach, season)
-    ((win_total / total_games) * 100).round(2)
-  end
-
   def create_coach_win_data_by_season(season)
     coaches_by_season(season).reduce({}) do |acc, coach|
       acc[coach] = coach_win_percentage_by_season(coach, season)
@@ -128,12 +110,6 @@ class SeasonStat
       coach_wins
     end
     worst_coach[0]
-  end
-
-  def team_shots_to_goal_ratio_by_season(team_id, season)
-    total_goals = get_goals_by_team_season(team_id, season).to_f
-    total_shots = get_shots_by_team_season(team_id, season)
-    (total_shots / total_goals).round(3)
   end
 
   def create_team_data_by_season(season)
