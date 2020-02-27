@@ -1,38 +1,15 @@
-require_relative 'game_collection'
-require_relative 'game_team_collection'
-require_relative 'team_collection'
+require_relative 'stat'
 require_relative './modules/helper_methods'
 
-class SeasonStat
+class SeasonStat < Stat
   include Helperable
 
   def initialize(game_collection, team_collection, game_team_collection)
-    @game_collection = game_collection
-    @team_collection = team_collection
-    @game_team_collection = game_team_collection
-    @season_list = []
-    @games_by_season = {}
-    @game_teams_by_season = {}
+    super(game_collection, team_collection, game_team_collection)
     @coach_win_data = {}
   end
 
-  def get_all_seasons
-    @season_list = @game_collection.games_list.map { |game| game.season }.uniq
-  end
 
-  def season_games_by_all_seasons #need to test #combine these methods
-    @season_list.reduce({}) do |acc, season|
-      acc[season] = get_season_games(season)
-      @games_by_season = acc
-    end
-  end
-
-  def season_game_teams_by_all_seasons #need to test
-    @season_list.reduce({}) do |acc, season|
-      acc[season] = get_season_game_teams(season)
-      @game_teams_by_season = acc
-    end
-  end
 
   def count_of_season_games(season)
     @games_by_season[season].size

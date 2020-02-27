@@ -59,19 +59,11 @@ class SeasonStatTest < Minitest::Test
   end
 
   def test_it_can_get_season_games
-    @season_stat.season_games_by_all_seasons
     @season_stat.get_all_seasons
+    @season_stat.season_games_by_all_seasons
     assert_instance_of Array, @season_stat.get_season_games("20122013")
     assert_equal 257, @season_stat.get_season_games("20122013").length
     assert_equal "20122013", @season_stat.get_season_games("20122013").first.season
-  end
-
-  def test_it_has_attributes
-    @season_stat.season_games_by_all_seasons
-    @season_stat.get_all_seasons
-    assert_instance_of Array, @season_stat.get_season_games("20122013")
-    assert_equal 257, @season_stat.get_season_games("20122013").length
-    assert_instance_of Game, @season_stat.get_season_games("20122013").first
   end
 
   def test_it_can_count_season_games
