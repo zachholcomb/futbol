@@ -38,6 +38,15 @@ class StatTest < Minitest::Test
     assert_equal "20122013", @stat.get_season_games("20122013").first.season
   end
 
+  def test_it_can_get_season_game_teams
+    @stat.get_all_seasons
+    @stat.season_games_by_all_seasons
+
+    assert_instance_of Array, @stat.get_season_game_teams("20122013")
+    assert_equal 117, @stat.get_season_game_teams("20122013").length
+    assert_equal "John Tortorella", @stat.get_season_game_teams("20122013").first.head_coach
+  end
+
   def test_it_has_attributes
     @stat.get_all_seasons
     @stat.season_games_by_all_seasons
