@@ -20,12 +20,6 @@ class StatTrackerTest < Minitest::Test
     assert_instance_of StatTracker, @stat_tracker
   end
 
-  def test_it_has_attributes
-    assert_instance_of GameTeamCollection, @stat_tracker.game_team_collection
-    assert_instance_of TeamCollection, @stat_tracker.team_collection
-    assert_instance_of GameCollection, @stat_tracker.game_collection
-  end
-
   def test_it_can_return_team_info
 
     expected = { "team_id" => "18", "franchise_id" => "34",
@@ -201,5 +195,4 @@ class StatTrackerTest < Minitest::Test
   def test_it_returns_worst_fans
     assert_equal ["Houston Dynamo", "Utah Royals FC"], @stat_tracker.worst_fans
   end
-
 end

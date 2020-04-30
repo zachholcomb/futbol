@@ -1,16 +1,22 @@
 require_relative 'test_helper'
 require './lib/scored_goal_stat'
+require './lib/game'
+require './lib/game_team'
+require './lib/team'
+require './lib/modules/csv_loadable'
 
 class ScoredGoalStatTest < Minitest::Test
+  include CSVLoadable
 
   def setup
     team_file_path = './data/teams.csv'
     game_team_file_path = './test/fixtures/truncated_game_teams.csv'
     game_file_path = './test/fixtures/truncated_games.csv'
-    @team_collection = TeamCollection.new(team_file_path)
-    @game_team_collection = GameTeamCollection.new(game_team_file_path)
-    @game_collection = GameCollection.new(game_file_path)
-    @scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
+    @team_collection = load_csv(team_file_path, Team)
+    @game_collection = load_csv(game_file_path, Game)
+    @game_team_collection = load_csv(game_team_file_path, GameTeam)
+    @stat = Stat.new(@game_collection, @team_collection, @game_team_collection)
+    @scored_goal_stat = ScoredGoalStat.new(@game_collection, @team_collection, @game_team_collection)
   end
 
   def test_it_exists

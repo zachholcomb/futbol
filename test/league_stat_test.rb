@@ -1,16 +1,21 @@
 require_relative 'test_helper'
 require './lib/league_stat'
-require './lib/team_collection'
-require './lib/game_collection'
+require './lib/game'
+require './lib/game_team'
+require './lib/team'
+require './lib/modules/csv_loadable'
 
 class LeagueStatClass < Minitest::Test
+  include CSVLoadable
 
   def setup
     teams_file_path = './data/teams.csv'
     games_file_path = './data/games.csv'
-    @team_collection = TeamCollection.new(teams_file_path)
-    @game_collection = GameCollection.new(games_file_path)
-    @league_stat = LeagueStat.new(@team_collection, @game_collection)
+    game_team_file_path = './test/fixtures/truncated_game_teams.csv'
+    @team_collection = load_csv(teams_file_path, Team)
+    @game_collection = load_csv(games_file_path, Game)
+    @game_team_collection = load_csv(game_team_file_path, GameTeam)
+    @league_stat = LeagueStat.new( @game_collection, @team_collection, @game_team_collection)
   end
 
   def test_it_exists
@@ -23,13 +28,6 @@ class LeagueStatClass < Minitest::Test
 
   def test_it_nests_second_hash_with_default_value_0
     assert_equal 0, @league_stat.stats_by_team[:new_key][:doesnt_exist]
-  end
-
-  def test_it_creates_teams
-    test_team = OpenStruct.new(team_id:100, team_name:"TestTeam")
-    @league_stat.create_teams([test_team])
-
-    assert_equal "TestTeam", @league_stat.stats_by_team[100][:team_name]
   end
 
   def test_it_creates_away_stats
@@ -70,35 +68,6 @@ class LeagueStatClass < Minitest::Test
     }
 
     assert_equal expected, @league_stat.stats_by_team[100]
-  end
-
-  def test_it_creates_league_stats
-    test_game = OpenStruct.new(
-      away_team_id:101,
-      home_team_id:100,
-      away_goals:3,
-      home_goals:2
-    )
-    @league_stat.create_league_stats([test_game])
-    expected_away = {
-      total_games: 1,
-      away_goals: 3,
-      away_goals_allowed: 2,
-      away_wins: 1,
-      away_games: 1,
-      total_wins: 1
-    }
-    expected_home = {
-      total_games: 1,
-      home_goals: 2,
-      home_goals_allowed: 3,
-      home_losses: 1,
-      home_games: 1,
-      total_losses: 1
-    }
-
-    assert_equal expected_away, @league_stat.stats_by_team[101]
-    assert_equal expected_home, @league_stat.stats_by_team[100]
   end
 
   def test_it_returns_count_of_teams

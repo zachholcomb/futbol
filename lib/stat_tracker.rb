@@ -1,24 +1,28 @@
 require 'csv'
-require_relative 'season_win'
+require_relative 'game'
+require_relative 'game_team'
+require_relative 'team'
+require_relative 'stat'
 require_relative 'season_stat'
 require_relative 'scored_goal_stat'
 require_relative 'league_stat'
 require_relative 'team_stat'
-require_relative 'game_collection'
+require_relative 'game_stat'
+require_relative './modules/csv_loadable'
 
 class StatTracker
   attr_reader :game_collection, :team_collection, :game_team_collection
+  include CSVLoadable
 
   def initialize(games_file, teams_file, game_teams_file)
-    @game_collection = GameCollection.new(games_file)
-    @game_team_collection = GameTeamCollection.new(game_teams_file)
-    @team_collection = TeamCollection.new(teams_file)
-    @season_win = SeasonWin.new(@team_collection, @game_team_collection)
-    @scored_goal_stat = ScoredGoalStat.new(@team_collection, @game_team_collection, @game_collection)
-    @stat = Stat.new(@game_collection, @team_collection, @game_team_collection)
+    @game_collection = load_csv(games_file, Game)
+    @game_team_collection = load_csv(game_teams_file, GameTeam)
+    @team_collection = load_csv(teams_file, Team)
+    @game_stat = GameStat.new(@game_collection, @team_collection, @game_team_collection)
+    @scored_goal_stat = ScoredGoalStat.new(@game_collection, @team_collection, @game_team_collection)
     @season = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
-    @league_stat = LeagueStat.new(@team_collection, @game_collection)
-    @team_stat = TeamStat.new(@game_collection)
+    @league_stat = LeagueStat.new(@game_collection, @team_collection, @game_team_collection)
+    @team_stat = TeamStat.new(@game_collection, @team_collection, @game_team_collection)
   end
 
   def self.from_csv(locations_params)
@@ -30,19 +34,19 @@ class StatTracker
   end
 
   def team_info(team_id)
-    @season_win.team_info(team_id)
+    @season.team_info(team_id)
   end
 
   def best_season(team_id)
-    @season_win.best_season(team_id)
+    @season.best_season(team_id)
   end
 
   def worst_season(team_id)
-    @season_win.worst_season(team_id)
+    @season.worst_season(team_id)
   end
 
   def average_win_percentage(team_id)
-    @season_win.average_win_percentage(team_id)
+    @season.average_win_percentage(team_id)
   end
 
   def most_goals_scored(team_id)
@@ -78,7 +82,7 @@ class StatTracker
   end
 
   def average_goals_per_game
-    @game_collection.average_goals_per_game
+    @game_stat.average_goals_per_game
   end
 
   def average_goals_by_season
@@ -166,15 +170,15 @@ class StatTracker
   end
 
   def percentage_home_wins
-    @game_collection.percentage_home_wins
+    @game_stat.percentage_home_wins
   end
 
   def percentage_visitor_wins
-    @game_collection.percentage_visitor_wins
+    @game_stat.percentage_visitor_wins
   end
 
   def percentage_ties
-    @game_collection.percentage_ties
+    @game_stat.percentage_ties
   end
 
   def highest_total_score

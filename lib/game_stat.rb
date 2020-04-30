@@ -1,25 +1,17 @@
 require 'csv'
 require_relative 'game'
 
-class GameCollection
-  attr_reader :games_list, :pct_data
+class GameStat < Stat
+  attr_reader :pct_data
 
-  def initialize(file_path)
-    @games_list = create_games(file_path)
+  def initialize(game_collection, team_collection, game_team_collection)
+    super(game_collection, team_collection, game_team_collection)
     @pct_data = Hash.new { |hash, key| hash[key] = 0 }
     create_pct_data
   end
 
-  def create_games(file_path)
-    csv = CSV.read(file_path, headers: true, header_converters: :symbol)
-
-    csv.map do |row|
-      Game.new(row)
-    end
-  end
-
   def create_pct_data
-    @games_list.each do |game|
+    @game_collection.each do |game|
       @pct_data[:total_games] += 1
       if game.home_goals == game.away_goals
         @pct_data[:ties] += 1
@@ -34,7 +26,7 @@ class GameCollection
 
   def average_goals_per_game
     total = 0
-    @games_list.each do |game|
+    @game_collection.each do |game|
 
       total += (game.home_goals + game.away_goals)
     end
@@ -56,5 +48,4 @@ class GameCollection
   def percentage_ties
     pct_of_total_games(:ties)
   end
-
 end

@@ -1,20 +1,20 @@
 require_relative 'test_helper'
 require './lib/season_stat'
-require './lib/game_collection'
-require './lib/game_team_collection'
-require './lib/team_collection'
 require './lib/game'
 require './lib/game_team'
 require './lib/team'
+require './lib/modules/csv_loadable'
 
 class SeasonStatTest < Minitest::Test
+  include CSVLoadable
+
   def setup
     team_file_path = './data/teams.csv'
     game_file_path = './test/fixtures/truncated_games.csv'
     game_team_file_path = './test/fixtures/truncated_game_teams.csv'
-    @game_collection = GameCollection.new(game_file_path)
-    @team_collection = TeamCollection.new(team_file_path)
-    @game_team_collection = GameTeamCollection.new(game_team_file_path)
+    @team_collection = load_csv(team_file_path, Team)
+    @game_collection = load_csv(game_file_path, Game)
+    @game_team_collection = load_csv(game_team_file_path, GameTeam)
     @season_stat = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
 
     @team_info = {
@@ -319,5 +319,69 @@ class SeasonStatTest < Minitest::Test
     @season_stat.get_all_seasons
     @season_stat.season_game_teams_by_all_seasons
     assert_equal "Orlando Pride", @season_stat.fewest_tackles("20122013")
+  end
+
+  def test_it_can_return_team_info
+    expected = { "team_id" => "18", "franchise_id" => "34",
+                 "team_name" => "Minnesota United FC",
+                 "abbreviation" => "MIN",
+                 "link" => "/api/v1/teams/18" }
+
+    assert_equal expected, @season_stat.team_info("18")
+  end
+
+  def test_it_can_return_best_season
+    assert_equal "20142015", @season_stat.best_season("3")
+  end
+
+  def test_it_can_return_worst_season
+    assert_equal "20122013", @season_stat.worst_season("3")
+  end
+
+  def test_it_can_return_total_games_played
+    assert_instance_of Hash, @season_stat.total_games_by_season("3")
+    assert_equal 12, @season_stat.total_games_by_season("3")["20122013"]
+    assert_equal 11, @season_stat.total_games_by_season("3")["20142015"]
+    assert_equal 5, @season_stat.total_games_by_season("3")["20152016"]
+  end
+
+  def test_it_can_return_winning_game_ids
+    assert_instance_of Hash, @season_stat.winning_game_ids("3")
+    assert_equal 2, @season_stat.winning_game_ids("3").length
+    assert_equal 2, @season_stat.winning_game_ids("3")["20122013"]
+    assert_equal 8, @season_stat.winning_game_ids("3")["20142015"]
+    assert_equal ["20122013", "20142015"], @season_stat.winning_game_ids("3").keys
+  end
+
+  def test_it_can_group_arrays_by_season
+    array = ["2012030136", "2012030137", "2014030131", "2014030132", "2014030133", "2014030134", "2014030135", "2014030311", "2014030314", "2014030316"]
+
+    assert_instance_of Hash, @season_stat.group_arrays_by_season(array)
+
+    expected = {"2012"=>["2012030136", "2012030137"],
+                "2014"=>["2014030131", "2014030132", "2014030133", "2014030134", "2014030135", "2014030311", "2014030314", "2014030316"]}
+
+    assert_equal expected, @season_stat.group_arrays_by_season(array)
+  end
+
+  def test_it_can_transform_key_into_season_and_length
+    collection = {"2012"=>["2012030136", "2012030137"],
+                  "2014"=>["2014030131", "2014030132", "2014030133", "2014030134", "2014030135", "2014030311", "2014030314", "2014030316"]}
+
+    assert_instance_of Hash, @season_stat.transform_key_into_season(collection)
+
+    expected = {"20122013"=>2, "20142015"=>8}
+
+    assert_equal expected, @season_stat.transform_key_into_season(collection)
+  end
+
+  def test_it_can_return_average_wins
+    assert_instance_of Hash, @season_stat.average_wins_by_team_per_season("3")
+    assert_equal 16.67, @season_stat.average_wins_by_team_per_season("3")["20122013"]
+    assert_equal 72.73, @season_stat.average_wins_by_team_per_season("3")["20142015"]
+  end
+
+  def test_it_can_return_average_win_percentage
+    assert_equal 0.36, @season_stat.average_win_percentage("3")
   end
 end

@@ -1,15 +1,11 @@
-require_relative 'team_collection'
-require_relative 'game_team_collection'
-require_relative 'game_collection'
+require_relative 'stat'
 require_relative './modules/helper_methods'
 
-class ScoredGoalStat
+class ScoredGoalStat < Stat
   include Helperable
 
-  def initialize(team_collection, game_team_collection, game_collection)
-    @team_collection = team_collection
-    @game_team_collection = game_team_collection
-    @game_collection = game_collection
+  def initialize(game_collection, team_collection, game_team_collection)
+    super(game_collection, team_collection, game_team_collection)
   end
 
   def most_goals_scored(team_id)
@@ -21,7 +17,7 @@ class ScoredGoalStat
   end
 
   def total_goals_scored(team_id)
-    @game_team_collection.game_team_list.map do |game_team|
+    @game_team_collection.map do |game_team|
       if game_team.team_id.to_s == team_id
         game_team.goals
       end
@@ -38,7 +34,7 @@ class ScoredGoalStat
 
   def win_loss_logic(team_id, use_greater)
     win_loss = {}
-    @game_collection.games_list.map do |game|
+    @game_collection.map do |game|
       if game.away_team_id.to_s == team_id || game.home_team_id.to_s == team_id
         if game.away_team_id.to_s == team_id &&
             ((game.away_goals > game.home_goals && use_greater) ||
@@ -69,7 +65,7 @@ class ScoredGoalStat
   end
 
   def create_list_opponent_games(team_id, lost_games)
-    @game_collection.games_list.reduce({}) do |acc, game|
+    @game_collection.reduce({}) do |acc, game|
       if ((game.away_team_id.to_s == team_id && (game.away_goals < game.home_goals)) && lost_games) ||
           (game.away_team_id.to_s == team_id && !lost_games)
         (acc[game.home_team_id.to_s] ||= []) << game.game_id.to_s
@@ -94,7 +90,7 @@ class ScoredGoalStat
   end
 
   def create_opponent_game_id_list(team_id, won_games)
-    @game_collection.games_list.reduce({}) do |acc, game|
+    @game_collection.reduce({}) do |acc, game|
       if ((game.away_team_id.to_s == team_id && (game.away_goals > game.home_goals)) && won_games) ||
           (game.away_team_id.to_s == team_id && !won_games)
         (acc[game.home_team_id.to_s] ||= []) << game.game_id.to_s
