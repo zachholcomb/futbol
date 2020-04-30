@@ -7,13 +7,29 @@ class Stat
     @season_list = []
     @games_by_season = {}
     @game_teams_by_season = {}
+    @pct_data = Hash.new { |hash, key| hash[key] = 0 }
     @stats_by_team = Hash.new do |hash, key|
       hash[key] = Hash.new { |hash, key| hash[key] = 0 }
     end
     create_data
   end
 
+  def create_pct_data
+    @game_collection.each do |game|
+      @pct_data[:total_games] += 1
+      if game.home_goals == game.away_goals
+        @pct_data[:ties] += 1
+      elsif game.home_goals > game.away_goals
+        @pct_data[:home_wins] += 1
+      else
+        @pct_data[:away_wins] += 1
+      end
+    end
+    @pct_data
+  end
+
   def create_data
+    create_pct_data
     get_all_seasons
     season_games_by_all_seasons
     season_game_teams_by_all_seasons

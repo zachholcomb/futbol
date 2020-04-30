@@ -6,22 +6,6 @@ class GameStat < Stat
 
   def initialize(game_collection, team_collection, game_team_collection)
     super(game_collection, team_collection, game_team_collection)
-    @pct_data = Hash.new { |hash, key| hash[key] = 0 }
-    create_pct_data
-  end
-
-  def create_pct_data
-    @game_collection.each do |game|
-      @pct_data[:total_games] += 1
-      if game.home_goals == game.away_goals
-        @pct_data[:ties] += 1
-      elsif game.home_goals > game.away_goals
-        @pct_data[:home_wins] += 1
-      else
-        @pct_data[:away_wins] += 1
-      end
-    end
-    @pct_data
   end
 
   def average_goals_per_game
