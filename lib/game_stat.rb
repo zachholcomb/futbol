@@ -2,7 +2,7 @@ require 'csv'
 require_relative 'game'
 
 class GameStat < Stat
-  attr_reader :pct_data
+  attr_reader :pct_data, :game_collection, :team_collection, :game_team_collection
 
   def initialize(game_collection, team_collection, game_team_collection)
     super(game_collection, team_collection, game_team_collection)
@@ -10,15 +10,15 @@ class GameStat < Stat
 
   def average_goals_per_game
     total = 0
-    @game_collection.each do |game|
+    game_collection.each do |game|
 
       total += (game.home_goals + game.away_goals)
     end
-    (total.to_f / @pct_data[:total_games]).round(2)
+    (total.to_f / pct_data[:total_games]).round(2)
   end
 
   def pct_of_total_games(outcome_type)
-    (@pct_data[outcome_type] / @pct_data[:total_games].to_f).round(2)
+    (pct_data[outcome_type] / pct_data[:total_games].to_f).round(2)
   end
 
   def percentage_home_wins

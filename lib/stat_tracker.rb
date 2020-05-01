@@ -8,6 +8,7 @@ require_relative 'scored_goal_stat'
 require_relative 'league_stat'
 require_relative 'team_stat'
 require_relative 'game_stat'
+require_relative 'coach_stat'
 require_relative './modules/csv_loadable'
 
 class StatTracker
@@ -23,6 +24,7 @@ class StatTracker
     @season = SeasonStat.new(@game_collection, @team_collection, @game_team_collection)
     @league_stat = LeagueStat.new(@game_collection, @team_collection, @game_team_collection)
     @team_stat = TeamStat.new(@game_collection, @team_collection, @game_team_collection)
+    @coach_stat = CoachStat.new(@game_collection, @team_collection, @game_team_collection)
   end
 
   def self.from_csv(locations_params)
@@ -34,7 +36,7 @@ class StatTracker
   end
 
   def team_info(team_id)
-    @season.team_info(team_id)
+    @season.create_team_info(team_id)
   end
 
   def best_season(team_id)
@@ -98,11 +100,11 @@ class StatTracker
   end
 
   def winningest_coach(season_param)
-    @season.winningest_coach(season_param)
+    @coach_stat.winningest_coach(season_param)
   end
 
   def worst_coach(season_param)
-    @season.worst_coach(season_param)
+    @coach_stat.worst_coach(season_param)
   end
 
   def most_accurate_team(season_param)

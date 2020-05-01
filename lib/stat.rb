@@ -1,5 +1,20 @@
+require_relative './modules/calculable'
+
 class Stat
-  attr_reader :games_by_season, :game_teams_by_season, :season_list
+  include Calculable
+  attr_reader :game_collection,
+              :team_collection,
+              :game_team_collection,
+              :games_by_season, 
+              :game_teams_by_season, 
+              :season_list,
+              :stats_by_team,
+              :season_list,
+              :games_by_season,
+              :game_teams_by_season,
+              :pct_data,
+              :team_info
+              
   def initialize(game_collection, team_collection, game_team_collection)
     @game_collection = game_collection
     @team_collection = team_collection
@@ -7,7 +22,8 @@ class Stat
     @season_list = []
     @games_by_season = {}
     @game_teams_by_season = {}
-    @pct_data = Hash.new { |hash, key| hash[key] = 0 }
+    @team_info = {}
+    @pct_data = Hash.new(0)
     @stats_by_team = Hash.new do |hash, key|
       hash[key] = Hash.new { |hash, key| hash[key] = 0 }
     end
@@ -36,6 +52,7 @@ class Stat
     create_teams
     create_league_stats
     create_scoring_averages
+    team_info
   end
   
   def create_teams
@@ -121,10 +138,17 @@ class Stat
     end
   end
 
-  def coaches_by_season(season)
-    @game_teams_by_season[season].map do |game|
-      game.head_coach
-    end.uniq
+  def create_team_info(team_id)
+    @team_collection.reduce(Hash.new) do |acc, team|
+      if team_id == team.team_id.to_s
+        acc = {"team_id" => team.team_id.to_s,
+               "franchise_id" => team.franchise_id.to_s,
+               "team_name" => team.team_name,
+               "abbreviation" => team.abbreviation,
+               "link" => team.link}
+      end
+      @team_info = acc
+    end
   end
 
   def get_team_ids_by_season(season)
@@ -163,18 +187,6 @@ class Stat
     team_shots
   end
 
-  def get_coach_wins_by_season(coach, season)
-    @game_teams_by_season[season].find_all do |game_team|
-      game_team.head_coach == coach && game_team.result == "WIN"
-    end.length
-  end
-
-  def get_total_coach_games_by_season(coach, season)
-    @game_teams_by_season[season].find_all do |game_team|
-      game_team.head_coach == coach
-    end.length
-  end
-
   def total_team_games_by_game_type(team_id, game_type, season)
     total_games = 0
 
@@ -202,22 +214,12 @@ class Stat
   def team_win_percentage(team_id, game_type, season)
     total_wins = total_team_wins_by_game_type(team_id, game_type, season).to_f
     total_games = total_team_games_by_game_type(team_id, game_type, season)
-    if total_games == 0
-      return 0.00
-    else
-      ((total_wins / total_games) * 100).round(2)
-    end
+    calculate_percentage(total_wins, total_games)
   end
 
   def team_shots_to_goal_ratio_by_season(team_id, season)
     total_goals = get_goals_by_team_season(team_id, season).to_f
     total_shots = get_shots_by_team_season(team_id, season)
     (total_shots / total_goals).round(3)
-  end
-
-  def coach_win_percentage_by_season(coach, season)
-    win_total = get_coach_wins_by_season(coach, season).to_f
-    total_games = get_total_coach_games_by_season(coach, season)
-    ((win_total / total_games) * 100).round(2)
   end
 end
